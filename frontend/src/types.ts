@@ -26,3 +26,21 @@ export interface OrderCreatePayload {
   total_amount: number;
   items: OrderItemPayload[];
 }
+
+export interface OrderItem {
+  painting_id: number;
+  quantity: number;
+  price: number;
+}
+
+export interface Order {
+  id: number;
+  customer_name: string;
+  customer_email?: string;
+  customer_phone?: string;
+  customer_comment?: string;
+  total_amount: number;
+  status: "pending" | "in_process" | "shipped" | "delivered" | "returned";
+  created_at: string;
+  items?: OrderItem[];
+}

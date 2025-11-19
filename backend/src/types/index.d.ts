@@ -21,6 +21,7 @@ export interface Order {
   customer_phone?: string;
   customer_comment?: string;
   total_amount: number;
+  status: "pending" | "in_process" | "shipped" | "delivered" | "returned";
   created_at: string;
 }
 
@@ -36,7 +37,7 @@ export interface OrderCreatePayload {
 export interface Admin {
   id: number;
   username: string;
-  password_hash: string;
+  password: string;
 }
 
 export interface AdminJwtPayload {

@@ -11,7 +11,7 @@ export const loginAdmin = async (req: Request, res: Response) => {
     const admin = await findAdminByUsername(username);
     if (!admin) return res.status(401).json({ message: "Невірний логін або пароль" });
 
-    const isMatch = await bcrypt.compare(password, admin.password_hash);
+    const isMatch = await bcrypt.compare(password, admin.password);
     if (!isMatch) return res.status(401).json({ message: "Невірний логін або пароль" });
 
     const payload: AdminJwtPayload = { id: admin.id, username: admin.username };

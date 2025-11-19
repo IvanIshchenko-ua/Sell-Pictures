@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import api from "../api/axiosClient";
-import { Painting } from "../types";
+import api, { getImageUrl } from "../api/axiosClient";
+import type { Painting } from "../types";
 import { useCart } from "../context/CartContext";
 
 const PaintingDetails = () => {
@@ -21,7 +21,7 @@ const PaintingDetails = () => {
       <div className="bg-white rounded-2xl shadow overflow-hidden">
         {painting.image_url && (
           <img
-            src={`http://localhost:5000${painting.image_url}`}
+            src={getImageUrl(painting.image_url)}
             alt={painting.title}
             className="w-full object-cover"
           />
@@ -38,9 +38,9 @@ const PaintingDetails = () => {
         </p>
         <button
           onClick={() => addToCart(painting)}
-          className="px-6 py-3 rounded-full bg-slate-900 text-white text-sm font-semibold"
+          className="px-8 py-3 rounded-lg bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 hover:scale-110 transition-all duration-200 shadow-md"
         >
-          Додати в кошик
+          ✓ Додати в кошик
         </button>
       </div>
     </section>
