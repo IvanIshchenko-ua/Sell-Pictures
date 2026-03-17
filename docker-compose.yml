@@ -1,0 +1,72 @@
+services:
+  db:
+    image: mysql:8.4
+    container_name: sell-pictures-db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: art_shop
+    ports:
+      - "3307:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./backend/scripts/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p$$MYSQL_ROOT_PASSWORD --silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: sell-pictures-backend
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_USER: root
+      DB_PASSWORD: rootpassword
+      DB_NAME: art_shop
+      JWT_SECRET: change-me-in-production-very-long-secret
+      PORT: 5001
+      CORS_ORIGIN: http://localhost:8080
+      REQUEST_JSON_LIMIT: 100kb
+      MAX_UPLOAD_SIZE_BYTES: 5242880
+      GLOBAL_RATE_LIMIT_WINDOW_MS: 900000
+      GLOBAL_RATE_LIMIT_MAX: 250
+      AUTH_RATE_LIMIT_WINDOW_MS: 900000
+      AUTH_RATE_LIMIT_MAX: 10
+      ORDER_RATE_LIMIT_WINDOW_MS: 300000
+      ORDER_RATE_LIMIT_MAX: 20
+    volumes:
+      - ./backend/uploads:/app/uploads
+    healthcheck:
+      test: ["CMD-SHELL", "node -e \"fetch('http://127.0.0.1:5001/api/paintings').then(r=>{if(!r.ok)process.exit(1)})\""]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: sell-pictures-frontend
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    depends_on:
+      - backend
+    ports:
+      - "8080:80"
+
+volumes:
+  db_data:

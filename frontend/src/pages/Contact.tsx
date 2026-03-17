@@ -11,9 +11,9 @@ const Contact = () => {
         <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl shadow-md p-6 text-center border border-blue-200 w-full md:w-64">
           <div className="text-4xl mb-4">📞</div>
           <h3 className="font-semibold text-lg mb-2 text-slate-900">Телефон</h3>
-          <p className="text-slate-700 font-medium mb-3">+380 XX XXX XX XX</p>
+          <p className="text-slate-700 font-medium mb-3">+380 68 106 06 03</p>
           <a
-            href="tel:+380XXXXXXXXX"
+            href="tel:+380681060603"
             className="inline-block px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition"
           >
             Подзвонити

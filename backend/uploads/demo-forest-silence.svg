@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800">
+  <defs>
+    <linearGradient id="mist" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#dce8df"/>
+      <stop offset="100%" stop-color="#9db5a2"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#mist)"/>
+  <rect y="560" width="1200" height="240" fill="#6e8a75"/>
+  <g fill="#355a43">
+    <rect x="130" y="210" width="24" height="420" rx="12"/>
+    <rect x="315" y="160" width="28" height="470" rx="14"/>
+    <rect x="530" y="190" width="22" height="440" rx="11"/>
+    <rect x="780" y="140" width="30" height="490" rx="15"/>
+    <rect x="1010" y="170" width="24" height="460" rx="12"/>
+  </g>
+  <g fill="#4f7a5d">
+    <circle cx="142" cy="220" r="96"/>
+    <circle cx="329" cy="170" r="110"/>
+    <circle cx="541" cy="200" r="102"/>
+    <circle cx="795" cy="150" r="122"/>
+    <circle cx="1022" cy="180" r="108"/>
+  </g>
+  <rect y="500" width="1200" height="110" fill="#edf4ee" opacity="0.28"/>
+</svg>

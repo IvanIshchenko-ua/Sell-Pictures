@@ -1,0 +1,50 @@
+services:
+  backend:
+    image: ${BACKEND_IMAGE:-sell-pictures-backend:latest}
+    container_name: sell-pictures-backend
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    environment:
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT:-3306}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+      JWT_SECRET: ${JWT_SECRET}
+      PORT: 5001
+      CORS_ORIGIN: ${CORS_ORIGIN}
+      REQUEST_JSON_LIMIT: ${REQUEST_JSON_LIMIT:-100kb}
+      MAX_UPLOAD_SIZE_BYTES: ${MAX_UPLOAD_SIZE_BYTES:-5242880}
+      GLOBAL_RATE_LIMIT_WINDOW_MS: ${GLOBAL_RATE_LIMIT_WINDOW_MS:-900000}
+      GLOBAL_RATE_LIMIT_MAX: ${GLOBAL_RATE_LIMIT_MAX:-250}
+      AUTH_RATE_LIMIT_WINDOW_MS: ${AUTH_RATE_LIMIT_WINDOW_MS:-900000}
+      AUTH_RATE_LIMIT_MAX: ${AUTH_RATE_LIMIT_MAX:-10}
+      AUTH_LOCKOUT_WINDOW_MS: ${AUTH_LOCKOUT_WINDOW_MS:-900000}
+      AUTH_LOCKOUT_MAX_FAILURES: ${AUTH_LOCKOUT_MAX_FAILURES:-5}
+      AUTH_LOCKOUT_DURATION_MS: ${AUTH_LOCKOUT_DURATION_MS:-1800000}
+      ORDER_RATE_LIMIT_WINDOW_MS: ${ORDER_RATE_LIMIT_WINDOW_MS:-300000}
+      ORDER_RATE_LIMIT_MAX: ${ORDER_RATE_LIMIT_MAX:-20}
+      REQUEST_TIMEOUT_MS: ${REQUEST_TIMEOUT_MS:-15000}
+      HEADERS_TIMEOUT_MS: ${HEADERS_TIMEOUT_MS:-10000}
+      KEEP_ALIVE_TIMEOUT_MS: ${KEEP_ALIVE_TIMEOUT_MS:-5000}
+    volumes:
+      - ./backend/uploads:/app/uploads
+    healthcheck:
+      test: ["CMD-SHELL", "node -e \"fetch('http://127.0.0.1:5001/api/paintings').then(r=>{if(!r.ok)process.exit(1)})\""]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+
+  frontend:
+    image: ${FRONTEND_IMAGE:-sell-pictures-frontend:latest}
+    container_name: sell-pictures-frontend
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    depends_on:
+      - backend
+    ports:
+      - "80:80"

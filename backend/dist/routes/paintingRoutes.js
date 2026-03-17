@@ -1,0 +1,12 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const paintingController_1 = require("../controllers/paintingController");
+const auth_1 = require("../middleware/auth");
+const router = (0, express_1.Router)();
+router.get("/", paintingController_1.getPaintings);
+router.get("/:id", paintingController_1.getPainting);
+router.post("/", auth_1.auth, paintingController_1.createPaintingCtrl);
+router.put("/:id", auth_1.auth, paintingController_1.updatePaintingCtrl);
+router.delete("/:id", auth_1.auth, paintingController_1.deletePaintingCtrl);
+exports.default = router;
